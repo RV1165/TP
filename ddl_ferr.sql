@@ -102,4 +102,4 @@ CREATE TABLE detalle_compra (
     id_compra INTEGER NOT NULL,
     FOREIGN KEY (producto_cod) REFERENCES productos(produc_cod) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_compra) REFERENCES compra(id_compra) ON DELETE RESTRICT ON UPDATE CASCADE
-);
+);--elis
