@@ -1,0 +1,127 @@
+Table detalle_ventas {
+	id_detalle integer [ pk, increment, not null, unique ]
+	id_venta integer [ not null ]
+	producto integer [ not null ]
+	cantidad integer
+	precio_unitario decimal
+	subtotal decimal
+}
+
+Table ventas {
+	id_ventas integer [ pk, increment, not null, unique ]
+	fecha date
+	total decimal
+	tipo_pago varchar
+	estado varchar
+	id_detalle integer [ not null ]
+}
+
+Table usuario {
+	id_usuario integer [ pk, increment, not null, unique ]
+	nombre_usuario varchar
+	contraseña varchar
+	id_venta integer [ not null ]
+}
+
+Table cliente {
+	id_cliente integer [ pk, increment, not null, unique ]
+	nombre varchar
+	telefono varchar
+	direccion text
+	id_usuario integer [ pk, not null ]
+	id_producto integer [ not null ]
+}
+
+Table productos {
+	produc_cod integer [ pk, increment, not null, unique ]
+	nombre varchar
+	precio_unitario decimal
+	precio_iva decimal
+	id_stock integer [ not null ]
+	id_marca integer [ not null ]
+	id_categoria integer [ not null ]
+	id_cliente integer [ not null ]
+	id_cantidad integer [ not null ]
+	id_detalle integer [ not null ]
+}
+
+Table cantidad {
+	id_cantidad integer [ pk, increment, not null, unique ]
+	und_medida varchar
+	unidades varchar
+}
+
+Table stock {
+	id_stock integer [ pk, increment, not null, unique ]
+	disponible varchar
+	pasillo varchar
+	lugar varchar
+}
+
+Table categoria {
+	id_categoria integer [ pk, increment, not null, unique ]
+	nombre varchar
+	descripcion text
+	id_marca integer [ not null ]
+}
+
+Table marca {
+	id_marca integer [ pk, increment, not null, unique ]
+	nombre_marca varchar
+	pais_origen varchar
+}
+
+Table compra {
+	id_compra integer [ pk, increment, not null, unique ]
+	fecha_compra date
+	total decimal
+	estado varchar
+	id_detalle integer [ not null ]
+}
+
+Table detalle_compra {
+	id_detalle integer [ pk, increment, not null, unique ]
+	cantidad varchar [ not null ]
+	precio_unitario decimal
+	id_compra integer [ pk, not null ]
+}
+
+Ref fk_usuario_id_usuario_clientes {
+	usuario.id_usuario < cliente.id_usuario [ delete: restrict, update: cascade ]
+}
+
+Ref fk_clientes_cliente_cod_productos {
+	cliente.id_cliente < productos.id_cliente [ delete: restrict, update: cascade ]
+}
+
+Ref fk_productos_id_cantidad_cantidad {
+	productos.id_cantidad < cantidad.id_cantidad [ delete: restrict, update: cascade ]
+}
+
+Ref fk_productos_id_stock_stock {
+	productos.id_stock < stock.id_stock [ delete: restrict, update: cascade ]
+}
+
+Ref fk_productos_id_categoria_categoria {
+	productos.id_categoria < categoria.id_categoria [ delete: restrict, update: cascade ]
+}
+
+Ref fk_categoria_id_marca_marca {
+	categoria.id_marca < marca.id_marca [ delete: restrict, update: cascade ]
+}
+
+Ref fk_usuario_id_venta_ventas {
+	usuario.id_venta < ventas.id_ventas [ delete: restrict, update: cascade ]
+}
+
+Ref fk_productos_id_detalle_detalle_compra {
+	productos.id_detalle < detalle_compra.id_detalle [ delete: restrict, update: cascade ]
+}
+
+Ref fk_detalle_compra_id_compra_compra {
+	detalle_compra.id_compra < compra.id_compra [ delete: restrict, update: cascade ]
+}
+
+Ref fk_ventas_id_ventas_detalle_ventas {
+	ventas.id_ventas < detalle_ventas.id_venta [ delete: restrict, update: cascade ]
+}
